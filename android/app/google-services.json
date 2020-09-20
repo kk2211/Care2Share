@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "840013737118",
+    "firebase_url": "https://mental-well-being-chat.firebaseio.com",
+    "project_id": "mental-well-being-chat",
+    "storage_bucket": "mental-well-being-chat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:840013737118:android:37ab9b0ddc9e7de439df8f",
+        "android_client_info": {
+          "package_name": "com.kab.m_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "840013737118-lcua9h62npmjfkg6a3hd8trmhkgrnna6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApot_5klKQvdTacjUrF-mkzBmC0ehXQsk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "840013737118-lcua9h62npmjfkg6a3hd8trmhkgrnna6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
