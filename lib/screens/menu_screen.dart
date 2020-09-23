@@ -2,9 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import "package:m_app/components/quotes.dart";
+import 'package:m_app/screens/chat_menu.dart';
+import 'package:m_app/screens/chatbot.dart';
 import 'package:m_app/screens/welcome_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import "package:m_app/Firebase/autth_methods.dart";
 
 final _firestore = FirebaseFirestore.instance;
 User loggedInUser;
@@ -28,19 +31,20 @@ class _MenuScreenState extends State<MenuScreen> {
       });
     });
 
-    getCurrentUser();
+    loggedInUser = getCurrentUser();
+  
   }
 
-  void getCurrentUser() {
-    try {
-      final user = _auth.currentUser;
-      if (user != null) {
-        loggedInUser = user;
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
+  // void getCurrentUser() {
+  //   try {
+  //     final user = _auth.currentUser;
+  //     if (user != null) {
+  //       loggedInUser = user;
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -72,23 +76,28 @@ class _MenuScreenState extends State<MenuScreen> {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            Row(
-              children: [
-                Flexible(
-                  child: Container(
-                    constraints: BoxConstraints(minWidth: 300),
-                    height: 150,
-                    child: Image.asset(
-                      'images/c2s.png',
+            Card(
+              color: Colors.tealAccent,
+              elevation: 10,
+              child: Row(
+                children: [
+                  Flexible(
+                    child: Container(
+                      constraints: BoxConstraints(minWidth: 300),
+                      height: 150,
+                      child: Image.asset(
+                        'images/c2s.png',
+                      ),
                     ),
                   ),
-                ),
-                Text(
-                  "Sharing your thoughts and feelings can \ngo a long way in helping you feel better\nabout yourself   ",
-                  style: GoogleFonts.archivo(
-                      textStyle: TextStyle(color: Colors.black, fontSize: 15)),
-                ),
-              ],
+                  Text(
+                    "Sharing your thoughts and feelings can \ngo a long way in helping you feel better\nabout yourself   ",
+                    style: GoogleFonts.archivo(
+                        textStyle:
+                            TextStyle(color: Colors.black, fontSize: 15)),
+                  ),
+                ],
+              ),
             ),
             SizedBox(
               height: 30,
@@ -103,21 +112,22 @@ class _MenuScreenState extends State<MenuScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(30, 10, 30, 30),
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
               child: Container(
+                constraints: BoxConstraints(maxHeight: 150),
                 decoration: BoxDecoration(
                     color: Colors.limeAccent,
                     border: Border.all(
                       color: Colors.lightGreen,
                     ),
                     borderRadius: BorderRadius.all(Radius.circular((30)))),
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.all(10),
                 child: Text(
                   quote,
                   style: TextStyle(
                     color: Colors.black87,
                     fontStyle: FontStyle.italic,
-                    fontSize: 20,
+                    fontSize: 15,
                   ),
                 ),
               ),
@@ -132,18 +142,22 @@ class _MenuScreenState extends State<MenuScreen> {
                   height: 200,
                   width: 150,
                   child: GestureDetector(
-                    child: CardBox(text:"Chat Screen"),
+                    onTap: () {
+                      Navigator.pushNamed(context, ChatMenu.id);
+                    },
+                    child: CardBox(text: "Chat Screen"),
                   ),
                 ),
-                
                 Container(
                   height: 200,
                   width: 150,
                   child: GestureDetector(
-                    child: CardBox(text:"ChatBot"),
+                    onTap: () {
+                      Navigator.pushNamed(context, ChatBot.id);
+                    },
+                    child: CardBox(text: "ChatBot"),
                   ),
                 ),
-                
               ],
             ),
           ],
@@ -160,16 +174,19 @@ class CardBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white,
-      elevation: 5,
+      color: Colors.tealAccent,
+      elevation: 15,
       child: Padding(
-        padding: const EdgeInsets.only( top: 20),
+        padding: const EdgeInsets.only(top: 20),
         child: Column(
-          crossAxisAlignment:CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              text
-            ),
+            Text(text),
+            SizedBox(height: 10),
+            Padding(
+              padding: EdgeInsets.all(30),
+              child: Text("Function of this button"),
+            )
           ],
         ),
       ),
