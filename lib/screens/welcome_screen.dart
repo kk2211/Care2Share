@@ -13,7 +13,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightBlue[200],
+      backgroundColor: Colors.lightBlue[100],
         body: Padding(
       padding: EdgeInsets.symmetric(horizontal: 24.0),
       child: Column(
@@ -40,14 +40,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           ),
           RoundedButton(
             title: 'Log IN',
-            color: Colors.black,
+            color: Colors.lightBlueAccent,
             onPressed: () {
               Navigator.pushNamed(context, LoginScreen.id);
             },
           ),
           RoundedButton(
             title: 'Register',
-            color: Colors.black,
+            color: Colors.lightBlueAccent,
             onPressed: () {
               Navigator.pushNamed(context, RegistrationScreen.id);
             },

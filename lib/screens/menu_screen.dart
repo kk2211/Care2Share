@@ -77,8 +77,9 @@ class _MenuScreenState extends State<MenuScreen> {
         child: Column(
           children: [
             Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
               color: Colors.tealAccent,
-              elevation: 10,
+              elevation: 0,
               child: Row(
                 children: [
                   Flexible(
@@ -120,7 +121,7 @@ class _MenuScreenState extends State<MenuScreen> {
                     border: Border.all(
                       color: Colors.lightGreen,
                     ),
-                    borderRadius: BorderRadius.all(Radius.circular((30)))),
+                    borderRadius: BorderRadius.all(Radius.circular((15)))),
                 padding: EdgeInsets.all(10),
                 child: Text(
                   quote,
@@ -133,7 +134,7 @@ class _MenuScreenState extends State<MenuScreen> {
               ),
             ),
             SizedBox(
-              height: 20,
+              height: 30,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -174,6 +175,7 @@ class CardBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       color: Colors.tealAccent,
       elevation: 15,
       child: Padding(

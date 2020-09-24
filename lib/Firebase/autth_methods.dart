@@ -7,7 +7,6 @@ User getCurrentUser() {
     final user = auth.currentUser;
     if (user != null) {
       loggedInUser = user;
-      
     }
   } catch (e) {
     print(e);

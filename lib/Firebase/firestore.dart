@@ -1,18 +1,16 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 import "dart:math";
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 var firestore = FirebaseFirestore.instance;
-
-// var pairedUsers = new List();
-// String userToPair;
-// String currUserName;
 
 // Handle all the logic for getting user and updating firestore
 Future<String> getRandomUser(User user) async {
   var matchedUserDocid;
   var pairedUsers = new List();
-  var matchedUserList = new List();
+  int flag = 0;
+
   String userToPair; // value which will be returned
   String currUserName;
 
@@ -22,7 +20,9 @@ Future<String> getRandomUser(User user) async {
   await firestore.collection("users").get().then((QuerySnapshot value) {
     value.docs.forEach((element) {
       // print(element.data()['userName']);
-      usersInDb.add(element.data()['userName']);
+      if (element.data()["ready"] == true) {
+        usersInDb.add(element.data()['userName']);
+      }
     });
   });
 
@@ -31,7 +31,7 @@ Future<String> getRandomUser(User user) async {
     currUserName = value.data()["userName"];
     pairedUsers = (value.data()["paired"]);
     print(pairedUsers);
-    int flag = 0;
+
     for (var i in usersInDb) {
       if (pairedUsers.contains(i) == false && i != currUserName) {
         userToPair = i;
@@ -40,10 +40,11 @@ Future<String> getRandomUser(User user) async {
         break;
       }
     }
-    if (flag == 0) {
-      print("Not Found");
-    }
   });
+  if (flag == 0) {
+    print("Not Found");
+    return null;
+  }
 
   // adding paired Users list back into the db
   await firestore
@@ -59,7 +60,6 @@ Future<String> getRandomUser(User user) async {
       .then((value) {
     value.docs.forEach((element) {
       matchedUserDocid = element.id;
-      
     });
   });
   // print(matchedUserDocid);
@@ -67,8 +67,49 @@ Future<String> getRandomUser(User user) async {
     "paired": FieldValue.arrayUnion([currUserName])
   });
 
-  // print(usersInDb);
-  print(pairedUsers);
+  setReadytoPairFalse(user.uid);
+  setReadytoPairFalse(matchedUserDocid);
+
+  print(usersInDb);
 
   return userToPair;
+}
+
+Future<String> getCurrUserName(User user) async {
+  String currUserName;
+  await firestore.collection("users").doc(user.uid).get().then((value) {
+    currUserName = value.data()["userName"];
+  });
+  return currUserName;
+}
+
+Future<bool> addChatRoom(chatRoom, chatRoomId) {
+  firestore
+      .collection("chatRoom")
+      .doc(chatRoomId)
+      .set(chatRoom)
+      .catchError((e) {
+    print(e);
+  });
+}
+
+upDateReadytoPair(User user) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  int yesterday = prefs.getInt("yesterday") ?? 0;
+  if (yesterday != DateTime.now().day) {
+    firestore.collection("users").doc(user.uid).update({"ready": true});
+    prefs.setInt("yesterday", DateTime.now().day);
+  }
+}
+
+setReadytoPairFalse(String id) {
+  firestore.collection("users").doc(id).update({"ready": false});
+  print("Inside readyToPair");
+}
+
+getUserChats(myName) async {
+  return  firestore
+      .collection("chatRoom")
+      .where("users", arrayContains: myName)
+      .snapshots();
 }
