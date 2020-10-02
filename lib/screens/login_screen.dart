@@ -78,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 24.0,
                 ),
                 RoundedButton(
-                  title: "Log In",
+                  title: "Login",
                   color: Colors.lightBlueAccent,
                   onPressed: () async {
                     if (formKey.currentState.validate()) {

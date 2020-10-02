@@ -80,7 +80,11 @@ Future<String> getCurrUserName(User user) async {
   await firestore.collection("users").doc(user.uid).get().then((value) {
     currUserName = value.data()["userName"];
   });
-  return currUserName;
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString("username", currUserName);
+  print(prefs.getString("username"));
+
+  // return currUserName;
 }
 
 Future<bool> addChatRoom(chatRoom, chatRoomId) {
@@ -94,11 +98,16 @@ Future<bool> addChatRoom(chatRoom, chatRoomId) {
 }
 
 upDateReadytoPair(User user) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  int yesterday = prefs.getInt("yesterday") ?? 0;
+  // SharedPreferences prefs = await SharedPreferences.getInstance();
+  // int yesterday = prefs.getInt("yesterday") ?? 0;
+  var yesterday;
+  firestore.collection("users").doc(user.uid).get().then((value) {
+    yesterday=value.data()["dayPair"];
+  });
+
   if (yesterday != DateTime.now().day) {
-    firestore.collection("users").doc(user.uid).update({"ready": true});
-    prefs.setInt("yesterday", DateTime.now().day);
+    firestore.collection("users").doc(user.uid).update({"ready": true,"dayPair":DateTime.now().day});
+    // prefs.setInt("yesterday", DateTime.now().day);
   }
 }
 
@@ -108,8 +117,26 @@ setReadytoPairFalse(String id) {
 }
 
 getUserChats(myName) async {
-  return  firestore
+  return firestore
       .collection("chatRoom")
       .where("users", arrayContains: myName)
       .snapshots();
+}
+
+getChatMessages(String chatRoomId) async {
+  return firestore
+      .collection("chatRoom")
+      .doc(chatRoomId)
+      .collection("chats")
+      .orderBy('time')
+      .snapshots();
+}
+
+addMessagetoFirestore(String chatRoomId, messageData) {
+  firestore
+      .collection("chatRoom")
+      .doc(chatRoomId)
+      .collection("chats")
+      .add(messageData)
+      .catchError((e) {});
 }

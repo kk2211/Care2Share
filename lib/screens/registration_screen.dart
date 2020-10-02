@@ -125,12 +125,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           email: emailEditingController.text,
           password: passwordEditingController.text);
       if (newUser != null) {
-        Map<String,dynamic> userData = {
+        Map<String, dynamic> userData = {
           "userName": usernameEditingController.text,
           "userEmail": emailEditingController.text,
-          "paired": new List()
+          "paired": new List(),
+          "dayPair": DateTime.now().day - 1
         };
-         _auth.signInWithEmailAndPassword(
+        _auth.signInWithEmailAndPassword(
             email: emailEditingController.text,
             password: passwordEditingController.text);
         var currUser = _auth.currentUser;

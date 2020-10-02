@@ -3,3 +3,4 @@
 "quote"
 "lastDay": User matching
 "yesterday": Making user ready
+"username"

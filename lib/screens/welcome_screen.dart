@@ -28,18 +28,21 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               width: 200,
             ),
           ),
-          Text(
-            "Care2Share",
-            style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.w600,
+          
+          Center(
+            child: Text(
+              "Care2Share",
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
           SizedBox(
-            height: 50,
+            height: 30,
           ),
           RoundedButton(
-            title: 'Log IN',
+            title: 'Login',
             color: Colors.lightBlueAccent,
             onPressed: () {
               Navigator.pushNamed(context, LoginScreen.id);
