@@ -102,11 +102,14 @@ upDateReadytoPair(User user) async {
   // int yesterday = prefs.getInt("yesterday") ?? 0;
   var yesterday;
   firestore.collection("users").doc(user.uid).get().then((value) {
-    yesterday=value.data()["dayPair"];
+    yesterday = value.data()["dayPair"];
   });
 
   if (yesterday != DateTime.now().day) {
-    firestore.collection("users").doc(user.uid).update({"ready": true,"dayPair":DateTime.now().day});
+    firestore
+        .collection("users")
+        .doc(user.uid)
+        .update({"ready": true, "dayPair": DateTime.now().day});
     // prefs.setInt("yesterday", DateTime.now().day);
   }
 }
@@ -137,6 +140,15 @@ addMessagetoFirestore(String chatRoomId, messageData) {
       .collection("chatRoom")
       .doc(chatRoomId)
       .collection("chats")
+      .add(messageData)
+      .catchError((e) {});
+}
+
+addChatbotMessagetoFirestore(User user, messageData) {
+  firestore
+      .collection("users")
+      .doc(user.uid)
+      .collection("bot_chat")
       .add(messageData)
       .catchError((e) {});
 }

@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import "package:m_app/Firebase/firestore.dart";
 import 'package:m_app/constants.dart';
+import 'package:m_app/components/messageBubble.dart';
+import "package:profanity_filter/profanity_filter.dart";
 
 class ChatScreen extends StatefulWidget {
   // static String id = "chat_screen";
@@ -37,8 +39,8 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: AppBar(title: Text(widget.chatRoomId)),
       body: SafeArea(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(child: messageStream()),
           Container(
@@ -60,8 +62,19 @@ class _ChatScreenState extends State<ChatScreen> {
                     style: kSendButtonTextStyle,
                   ),
                   onPressed: () {
-                    messageTextController.clear();
-                    addMessage();
+                    final filter = ProfanityFilter();
+                    if (filter.hasProfanity(messageText)) {
+                      return showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text("Please don't use improper language"),
+                            );
+                          });
+                    } else {
+                      messageTextController.clear();
+                      addMessage();
+                    }
                   },
                 )
               ],
@@ -85,7 +98,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Widget messageStream() {
     return StreamBuilder(
-      
       stream: chats,
       builder: (context, snapshot) {
         // if (!snapshot.hasData) {
@@ -93,7 +105,7 @@ class _ChatScreenState extends State<ChatScreen> {
         // }
         return snapshot.hasData
             ? ListView.builder(
-              shrinkWrap: true,
+                shrinkWrap: true,
                 itemCount: snapshot.data.documents.length,
                 itemBuilder: (context, index) {
                   return MessageBubble(
@@ -103,57 +115,8 @@ class _ChatScreenState extends State<ChatScreen> {
                         snapshot.data.documents[index].get("sender"),
                   );
                 })
-            : Text("No Messages Available");
+            : Container();
       },
-    );
-  }
-}
-
-class MessageBubble extends StatelessWidget {
-  MessageBubble({this.sender, this.text, this.isme});
-
-  final String sender;
-  final String text;
-  final bool isme;
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(10.0),
-      child: Column(
-        crossAxisAlignment:
-            isme ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-        children: [
-          // Text(
-          //   sender,
-          //   style: TextStyle(fontSize: 12.0, color: Colors.black54),
-          // ),
-          Material(
-            borderRadius: isme
-                ? BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    bottomLeft: Radius.circular(30),
-                    bottomRight: Radius.circular(30),
-                  )
-                : BorderRadius.only(
-                    topRight: Radius.circular(30),
-                    bottomLeft: Radius.circular(30),
-                    bottomRight: Radius.circular(30),
-                  ),
-            elevation: 5.0,
-            color: isme ? Colors.lightBlueAccent : Colors.white,
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-              child: Text(
-                text,
-                style: TextStyle(
-                  fontSize: 15.0,
-                  color: isme ? Colors.white : Colors.black,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

@@ -49,9 +49,8 @@ class _MenuScreenState extends State<MenuScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final data= MediaQuery.of(context);
+    final data = MediaQuery.of(context);
     return Scaffold(
-      
       backgroundColor: Colors.lightBlue[50],
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -71,15 +70,32 @@ class _MenuScreenState extends State<MenuScreen> {
             },
           ),
         ],
-        title: Text(
-          "Care2Share",
-          style: TextStyle(),
+        title: Row(
+          children: [
+            Flexible(
+              child: Container(
+                constraints: BoxConstraints(minWidth: 10),
+                height: 50,
+                child: Image.asset(
+                  'images/c2s.png',
+                ),
+              ),
+            ),
+            Text(
+              "Care2Share",
+              style: TextStyle(),
+            ),
+          ],
         ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
+        // Choose either column or List View
+        child: ListView(
           children: [
+            SizedBox(
+              height: data.size.height / 30,
+            ),
             Card(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
@@ -87,19 +103,19 @@ class _MenuScreenState extends State<MenuScreen> {
               elevation: 5,
               child: Row(
                 children: [
-                  Flexible(
-                    child: Container(
-                      constraints: BoxConstraints(minWidth: 300),
-                      height: data.size.height/6,
-                      child: Image.asset(
-                        'images/c2s.png',
-                      ),
-                    ),
-                  ),
+                  // Flexible(
+                  //   child: Container(
+                  //     constraints: BoxConstraints(minWidth: 300),
+                  //     height: data.size.height/6,
+                  //     // child: Image.asset(
+                  //     //   'images/c2s.png',
+                  //     // ),
+                  //   ),
+                  // ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: Text(
-                      "Sharing your thoughts and feelings can \ngo a long way in helping you feel better\nabout yourself   ",
+                      "Sharing your thoughts and feelings can go \na long way in helping you feel better\nabout yourself   ",
                       style: GoogleFonts.archivo(
                           textStyle:
                               TextStyle(color: Colors.black, fontSize: 15)),
@@ -109,90 +125,92 @@ class _MenuScreenState extends State<MenuScreen> {
               ),
             ),
             SizedBox(
-              height: 40,
+              height: data.size.height / 10,
             ),
             Container(
-              height: data.size.height/5,
-            child: Scrollbar(
-                          child: ListView(children: [
-                Text(
-                " Quote of The Day",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 25,
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                child: Container(
-                  constraints: BoxConstraints(maxHeight: 150),
-                  decoration: BoxDecoration(
-                      color: Colors.limeAccent,
-                      border: Border.all(
-                        color: Colors.lightGreen,
-                      ),
-                      borderRadius: BorderRadius.all(Radius.circular((15)))),
-                  padding: EdgeInsets.all(10),
-                  child: Text(
-                    quote,
-                    // "Flutter’s widgets incorporate all critical platform differences such as scrolling, navigation, icons and fonts, and your Flutter code is compiled to native ARM machine code using Dart's native compilers.",
-                    
-                    style: TextStyle(
-                      color: Colors.black87,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 15,
-                    ),
-                  ),
-                ),
-              ),
-
-              ],),
-            )
-            
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Flexible(
-                          child: Container(
-                height: data.size.height/3,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                height: data.size.height / 5,
+                child: Scrollbar(
+                  child: ListView(
                     children: [
-                      Container(
-                        height: 200,
-                        width: 150,
-                        child: GestureDetector(
-                          onTap: () {
-              Navigator.pushNamed(context, ChatMenu.id);
-                          },
-                          child: CardBox(
-              text: "Chats",
-              function: "Interact with other people using the app",
-                          ),
+                      Text(
+                        " Quote of The Day",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                      Container(
-                        height: 200,
-                        width: 150,
-                        child: GestureDetector(
-                          onTap: () {
-              Navigator.pushNamed(context, ChatBot.id);
-                          },
-                          child: CardBox(
-              text: "ChatBot",
-              function: "Interact with our custom made chatbot",
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                        child: Container(
+                          constraints: BoxConstraints(maxHeight: 150),
+                          decoration: BoxDecoration(
+                              color: Colors.limeAccent,
+                              border: Border.all(
+                                color: Colors.lightGreen,
+                              ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular((15)))),
+                          padding: EdgeInsets.all(10),
+                          child: Text(
+                            quote,
+                            // "Flutter’s widgets incorporate all critical platform differences such as scrolling, navigation, icons and fonts, and your Flutter code is compiled to native ARM machine code using Dart's native compilers.",
+
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontStyle: FontStyle.italic,
+                              fontSize: 15,
+                            ),
                           ),
                         ),
                       ),
                     ],
                   ),
+                )),
+            SizedBox(
+              height: data.size.height / 25,
+            ),
+            Flexible(
+              child: Container(
+                height: data.size.height / 3,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      height: 200,
+                      width: 150,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, ChatMenu.id);
+                        },
+                        child: CardBox(
+                          text: "Chats",
+                          function: "Interact with other people using the app",
+                          // function: "",
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 200,
+                      width: 150,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, ChatBot.id);
+                        },
+                        child: CardBox(
+                          text: "ChatBot",
+                          function: "Interact with our custom made chatbot",
+                          // function: "",
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
+              ),
             ),
           ],
         ),
