@@ -99,6 +99,7 @@ class _ChatBotState extends State<ChatBot> {
         child: Padding(
           padding: const EdgeInsets.all(18.0),
           child: ListView(
+            physics: BouncingScrollPhysics(),
             reverse: true,
             children: [
               Column(
@@ -129,6 +130,7 @@ class _ChatBotState extends State<ChatBot> {
       builder: (context, snapshot) {
         return snapshot.hasData
             ? ListView.builder(
+              physics: BouncingScrollPhysics(),
                 primary: false,
                 shrinkWrap: true,
                 itemCount: snapshot.data.documents.length,

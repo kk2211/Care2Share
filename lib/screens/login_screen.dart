@@ -71,6 +71,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: passwordEditingController,
                   obscureText: true,
                   textAlign: TextAlign.center,
+                  validator: (val) {
+                    return val.length < 6
+                        ? "Enter Password 6+ characters"
+                        : null;
+                  },
                   decoration:
                       kTextFieldDecoration.copyWith(hintText: 'Enter password'),
                 ),

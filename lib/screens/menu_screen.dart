@@ -2,10 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:m_app/Firebase/firestore.dart';
+import 'package:m_app/MoodDiary/models/moodcard.dart';
+import 'package:m_app/MoodDiary/screens/start.dart';
 import "package:m_app/components/quotes.dart";
 import 'package:m_app/screens/chat_menu.dart';
 import 'package:m_app/screens/chatbot.dart';
 import 'package:m_app/screens/welcome_screen.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import "package:m_app/Firebase/autth_methods.dart";
@@ -92,6 +95,7 @@ class _MenuScreenState extends State<MenuScreen> {
         padding: const EdgeInsets.all(20.0),
         // Choose either column or List View
         child: ListView(
+          physics: ClampingScrollPhysics(),
           children: [
             SizedBox(
               height: data.size.height / 30,
@@ -174,9 +178,11 @@ class _MenuScreenState extends State<MenuScreen> {
             SizedBox(
               height: data.size.height / 25,
             ),
-            Flexible(
-              child: Container(
-                height: data.size.height / 3,
+            Container(
+              height: data.size.height / 3,
+              child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                scrollDirection: Axis.horizontal,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -208,6 +214,21 @@ class _MenuScreenState extends State<MenuScreen> {
                         ),
                       ),
                     ),
+                    Container(
+                      height: 200,
+                      width: 150,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, StartPage.id);
+                        },
+                        child: CardBox(
+                          text: "Mood Diary",
+                          function:
+                              "Use the mood diary to keep track of your moods",
+                          // function: "",
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -229,7 +250,7 @@ class CardBox extends StatelessWidget {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       color: Colors.tealAccent,
-      elevation: 25,
+      elevation: 10,
       child: Padding(
         padding: const EdgeInsets.only(top: 20),
         child: Column(
