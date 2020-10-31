@@ -92,7 +92,7 @@ class _MenuScreenState extends State<MenuScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.only(bottom:20.0,top: 20),
         // Choose either column or List View
         child: ListView(
           physics: ClampingScrollPhysics(),
@@ -100,32 +100,35 @@ class _MenuScreenState extends State<MenuScreen> {
             SizedBox(
               height: data.size.height / 30,
             ),
-            Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)),
-              color: Colors.tealAccent,
-              elevation: 5,
-              child: Row(
-                children: [
-                  // Flexible(
-                  //   child: Container(
-                  //     constraints: BoxConstraints(minWidth: 300),
-                  //     height: data.size.height/6,
-                  //     // child: Image.asset(
-                  //     //   'images/c2s.png',
-                  //     // ),
-                  //   ),
-                  // ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Text(
-                      "Sharing your thoughts and feelings can go \na long way in helping you feel better\nabout yourself   ",
-                      style: GoogleFonts.archivo(
-                          textStyle:
-                              TextStyle(color: Colors.black, fontSize: 15)),
+            Padding(
+              padding: const EdgeInsets.only(left:30.0,right:30),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+                color: Colors.tealAccent,
+                elevation: 5,
+                child: Row(
+                  children: [
+                    // Flexible(
+                    //   child: Container(
+                    //     constraints: BoxConstraints(minWidth: 300),
+                    //     height: data.size.height/6,
+                    //     // child: Image.asset(
+                    //     //   'images/c2s.png',
+                    //     // ),
+                    //   ),
+                    // ),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Text(
+                        "Sharing your thoughts and feelings can go \na long way in helping you feel better\nabout yourself   ",
+                        style: GoogleFonts.archivo(
+                            textStyle:
+                                TextStyle(color: Colors.black, fontSize: 15)),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             SizedBox(
@@ -149,7 +152,7 @@ class _MenuScreenState extends State<MenuScreen> {
                         height: 20,
                       ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                        padding: const EdgeInsets.only(left: 20,right: 20),
                         child: Container(
                           constraints: BoxConstraints(maxHeight: 150),
                           decoration: BoxDecoration(
@@ -178,58 +181,75 @@ class _MenuScreenState extends State<MenuScreen> {
             SizedBox(
               height: data.size.height / 25,
             ),
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: FeatureRow(data: data),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class FeatureRow extends StatelessWidget {
+  const FeatureRow({
+    Key key,
+    @required this.data,
+  }) : super(key: key);
+
+  final MediaQueryData data;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: data.size.height / 3,
+      child: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
             Container(
-              height: data.size.height / 3,
-              child: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      height: 200,
-                      width: 150,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, ChatMenu.id);
-                        },
-                        child: CardBox(
-                          text: "Chats",
-                          function: "Interact with other people using the app",
-                          // function: "",
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: 200,
-                      width: 150,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, ChatBot.id);
-                        },
-                        child: CardBox(
-                          text: "ChatBot",
-                          function: "Interact with our custom made chatbot",
-                          // function: "",
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: 200,
-                      width: 150,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, StartPage.id);
-                        },
-                        child: CardBox(
-                          text: "Mood Diary",
-                          function:
-                              "Use the mood diary to keep track of your moods",
-                          // function: "",
-                        ),
-                      ),
-                    ),
-                  ],
+              height: 200,
+              width: 150,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, ChatMenu.id);
+                },
+                child: CardBox(
+                  text: "Chats",
+                  function: "Interact with other people using the app",
+                  // function: "",
+                ),
+              ),
+            ),
+            Container(
+              height: 200,
+              width: 150,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, ChatBot.id);
+                },
+                child: CardBox(
+                  text: "ChatBot",
+                  function: "Interact with our custom made chatbot",
+                  // function: "",
+                ),
+              ),
+            ),
+            Container(
+              height: 200,
+              width: 150,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, StartPage.id);
+                },
+                child: CardBox(
+                  text: "Mood Diary",
+                  function:
+                      "Use the mood diary to keep track of your moods",
+                  // function: "",
                 ),
               ),
             ),
