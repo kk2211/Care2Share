@@ -4,6 +4,7 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:m_app/MoodDiary/models/moodcard.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:provider/provider.dart';
+import 'package:m_app/constants.dart';
 
 class MoodChart extends StatefulWidget {
   static String id = "chart";
@@ -128,110 +129,114 @@ class _MoodChartState extends State<MoodChart> {
 
     return Scaffold(
       backgroundColor: Colors.lightBlue[50],
-      appBar: AppBar(title: Text('Mood Graph'), backgroundColor: Colors.blue),
-      body: ListView(
-        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-        children: <Widget>[
-          SizedBox(
-            height: 108,
-            width: 300,
-            child: GridView.count(
-              crossAxisCount: 3,
-              childAspectRatio: (300 - 30) / (108 - 30),
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-              children: List.generate(
-                  6,
-                  (index) => MyMoodCard(
-                        Text(
-                          "${index + 1} - ${[
-                            'Angry',
-                            'Happy',
-                            'Sad',
-                            'Surprised',
-                            'Loving',
-                            'Scared'
-                          ][index]}",
-                          textAlign: TextAlign.center,
-                        ),
-                        direction: 1,
-                      )),
+      appBar: AppBar(title: Text('Mood Graph',style: appBarStyleText,), backgroundColor: appBarStyleColor),
+      body: Container(
+        decoration: backImage,
+
+        child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          children: <Widget>[
+            SizedBox(
+              height: 108,
+              width: 300,
+              child: GridView.count(
+                crossAxisCount: 3,
+                childAspectRatio: (300 - 30) / (108 - 30),
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                children: List.generate(
+                    6,
+                    (index) => MyMoodCard(
+                          Text(
+                            "${index + 1} - ${[
+                              'Angry',
+                              'Happy',
+                              'Sad',
+                              'Surprised',
+                              'Loving',
+                              'Scared'
+                            ][index]}",
+                            textAlign: TextAlign.center,
+                          ),
+                          direction: 1,
+                        )),
+              ),
             ),
-          ),
-          Expanded(
-            child: Container(
-              height: 200,
-            
+            Expanded(
+              child: Container(
+                height: 200,
+              
+                child: MyMoodCard(
+                  charts.BarChart(
+                    series,
+                    animate: true,
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              height: 30,
+            ),
+            Container(
+              width: 200,
               child: MyMoodCard(
-                charts.BarChart(
-                  series,
-                  animate: true,
-                ),
-              ),
-            ),
-          ),
-          Container(
-            height: 30,
-          ),
-          Container(
-            width: 200,
-            child: MyMoodCard(
-              PieChart(
-                dataMap: dataMap,
-                animationDuration: Duration(milliseconds: 800),
-                chartLegendSpacing: 32.0,
-                chartRadius: MediaQuery.of(context).size.width / 2.7,
-                chartType: ChartType.disc,
-                legendOptions: LegendOptions(
-                  showLegendsInRow: true,
-                  legendPosition: LegendPosition.bottom,
-                  showLegends: true,
-                  legendShape: BoxShape.circle,
-                  legendTextStyle: TextStyle(
-                    fontWeight: FontWeight.bold,
+                PieChart(
+                  dataMap: dataMap,
+                  animationDuration: Duration(milliseconds: 800),
+                  chartLegendSpacing: 32.0,
+                  chartRadius: MediaQuery.of(context).size.width / 2.7,
+                  chartType: ChartType.disc,
+                  legendOptions: LegendOptions(
+                    showLegendsInRow: true,
+                    legendPosition: LegendPosition.bottom,
+                    showLegends: true,
+                    legendShape: BoxShape.circle,
+                    legendTextStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  chartValuesOptions: ChartValuesOptions(
+                    showChartValueBackground: true,
+                    showChartValues: true,
+                    showChartValuesInPercentage: true,
+                    showChartValuesOutside: false,
                   ),
                 ),
-                chartValuesOptions: ChartValuesOptions(
-                  showChartValueBackground: true,
-                  showChartValues: true,
-                  showChartValuesInPercentage: true,
-                  showChartValuesOutside: false,
-                ),
               ),
             ),
-          ),
-          Container(
-            height: 30,
-          ),
-          Container(
-            width: 200,
-            child: MyMoodCard(
-              PieChart(
-                dataMap: dataMap2,
-                animationDuration: Duration(milliseconds: 800),
-                chartLegendSpacing: 32.0,
-                chartRadius: MediaQuery.of(context).size.width / 2.7,
-                chartType: ChartType.disc,
-                legendOptions: LegendOptions(
-                  showLegendsInRow: true,
-                  legendPosition: LegendPosition.bottom,
-                  showLegends: true,
-                  legendShape: BoxShape.circle,
-                  legendTextStyle: TextStyle(
-                    fontWeight: FontWeight.bold,
+            Container(
+              height: 30,
+            ),
+            Container(
+              width: 200,
+              child: MyMoodCard(
+                PieChart(
+                  dataMap: dataMap2,
+                  animationDuration: Duration(milliseconds: 800),
+                  chartLegendSpacing: 32.0,
+                  chartRadius: MediaQuery.of(context).size.width / 2.7,
+                  chartType: ChartType.disc,
+                  legendOptions: LegendOptions(
+                    showLegendsInRow: true,
+                    legendPosition: LegendPosition.bottom,
+                    showLegends: true,
+                    legendShape: BoxShape.circle,
+                    legendTextStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  chartValuesOptions: ChartValuesOptions(
+                    showChartValueBackground: true,
+                    showChartValues: true,
+                    showChartValuesInPercentage: true,
+                    showChartValuesOutside: false,
                   ),
                 ),
-                chartValuesOptions: ChartValuesOptions(
-                  showChartValueBackground: true,
-                  showChartValues: true,
-                  showChartValuesInPercentage: true,
-                  showChartValuesOutside: false,
-                ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

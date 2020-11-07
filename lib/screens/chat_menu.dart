@@ -6,6 +6,7 @@ import 'package:m_app/screens/chat_screen.dart';
 import 'package:m_app/screens/menu_screen.dart';
 import "package:m_app/Firebase/firestore.dart";
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:m_app/constants.dart';
 
 Stream chatRooms;
 String loggedInUsername;
@@ -31,6 +32,7 @@ class _ChatMenuState extends State<ChatMenu> {
     loggedInUser = getCurrentUser();
     upDateReadytoPair(loggedInUser);
     getChats();
+    newUser24hr();
   }
 
   @override
@@ -38,46 +40,65 @@ class _ChatMenuState extends State<ChatMenu> {
     return Scaffold(
       backgroundColor: Colors.lightBlue[50],
       appBar: AppBar(
-        title: Text("Chats"),
+        backgroundColor: appBarStyleColor,
+        title: Text("Chats", style: appBarStyleText),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.info, color: Colors.white),
+              onPressed: () {
+                return showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text(
+                            "Every 24 hours, we will find you a new user to interact and share your thoughts with."),
+                      );
+                    });
+              })
+        ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Center(
-              child: GestureDetector(
-                onTap: () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  int currDay = new DateTime.now().day;
-                  int savedDay = prefs.getInt("lastDay") ?? 0;
-                  if (currDay != savedDay) {
-                    await getUserToday();
-                  }
+      body: Container(
+        decoration: backImage,
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: ListView(
+            physics: BouncingScrollPhysics(),
+            // crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Center(
+                child: GestureDetector(
+                  // onTap: () async {
+                  //   SharedPreferences prefs =
+                  //       await SharedPreferences.getInstance();
+                  //   int currDay = new DateTime.now().day;
+                  //   int savedDay = prefs.getInt("lastDay") ?? 0;
+                  //   if (currDay != savedDay) {
+                  //     await getUserToday();
+                  //   }
 
-                  print(loggedInUsername);
-                },
-                child: Card(
-                  // color: Color(0xff6ae6dc),
-                  color: Colors.tealAccent,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Text(
-                        "Every 24 hours, we will find you a new user to interact and share your thoughts with."),
+                  //   print(loggedInUsername);
+                  // },
+                  child: Card(
+                    // color: Color(0xff6ae6dc),
+                    // color: Colors.yellow[100],
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Text(
+                          "Please rememeber the  following things when conversing with others \n\u2022 No abusive/Hateful Language.\n\u2022 Be friendly\n\u2022 Keep an open mind \n\u2022 Dont share any personal details"),
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Container(
-              child: chatRoomsList(),
-            ),
-          ],
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                child: chatRoomsList(),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -89,6 +110,7 @@ class _ChatMenuState extends State<ChatMenu> {
       builder: (context, snapshot) {
         return snapshot.hasData
             ? ListView.builder(
+                primary: false,
                 itemCount: snapshot.data.documents.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
@@ -101,9 +123,7 @@ class _ChatMenuState extends State<ChatMenu> {
                       chatRoomId:
                           snapshot.data.documents[index].get('chatRoomId'));
                 })
-            : Container(
-                child: Text("Not Working"),
-              );
+            : Container();
       },
     );
   }
@@ -121,6 +141,15 @@ class _ChatMenuState extends State<ChatMenu> {
         //     "we got the data + ${chatRooms.toString()} this is name  ${loggedInUsername}");
       });
     });
+  }
+}
+
+newUser24hr() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  int currDay = new DateTime.now().day;
+  int savedDay = prefs.getInt("lastDay") ?? 0;
+  if (currDay != savedDay) {
+    await getUserToday();
   }
 }
 
@@ -169,7 +198,11 @@ class ChatRoomsTile extends StatelessWidget {
                     )));
       },
       child: Container(
-        decoration: BoxDecoration(color: Colors.lightBlue[50]),
+        decoration: BoxDecoration(
+            // color: Colors.lightBlue[50]
+            // color: Colors.lightBlue[50]
+
+            ),
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
         child: Column(
           children: <Widget>[
@@ -188,7 +221,7 @@ class ChatRoomsTile extends StatelessWidget {
                             color: Colors.white,
                             fontSize: 16,
                             fontFamily: 'OverpassRegular',
-                            fontWeight: FontWeight.w300)),
+                            fontWeight: FontWeight.w400)),
                   ),
                 ),
                 SizedBox(
@@ -200,7 +233,7 @@ class ChatRoomsTile extends StatelessWidget {
                       color: Colors.black,
                       fontSize: 15,
                       fontFamily: 'OverpassRegular',
-                      fontWeight: FontWeight.w300),
+                      fontWeight: FontWeight.w500),
                 ),
               ],
             ),

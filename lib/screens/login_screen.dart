@@ -28,82 +28,85 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.lightBlue[100],
-      body: ModalProgressHUD(
-        inAsyncCall: showSpinner,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.0),
-          child: Form(
-            key: formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Flexible(
-                  child: Hero(
-                    tag: 'logo',
-                    child: Container(
-                      height: 200.0,
-                      child: Image.asset('images/c2s.png'),
+      body: Container(
+        decoration: backImage,
+        child: ModalProgressHUD(
+          inAsyncCall: showSpinner,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24.0),
+            child: Form(
+              key: formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Flexible(
+                    child: Hero(
+                      tag: 'logo',
+                      child: Container(
+                        height: 200.0,
+                        child: Image.asset('images/c2s.png'),
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 48.0,
-                ),
-                TextFormField(
-                  controller: emailEditingController,
-                  validator: (val) {
-                    return RegExp(
-                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                            .hasMatch(val)
-                        ? null
-                        : "Enter correct email";
-                  },
-                  keyboardType: TextInputType.emailAddress,
-                  textAlign: TextAlign.center,
-                  decoration:
-                      kTextFieldDecoration.copyWith(hintText: 'Enter email'),
-                ),
-                // SizedBox(
-                //   height: 8.0,
-                // ),
-                TextFormField(
-                  controller: passwordEditingController,
-                  obscureText: true,
-                  textAlign: TextAlign.center,
-                  validator: (val) {
-                    return val.length < 6
-                        ? "Enter Password 6+ characters"
-                        : null;
-                  },
-                  decoration:
-                      kTextFieldDecoration.copyWith(hintText: 'Enter password'),
-                ),
-                SizedBox(
-                  height: 24.0,
-                ),
-                RoundedButton(
-                  title: "Login",
-                  color: Colors.lightBlueAccent,
-                  onPressed: () async {
-                    if (formKey.currentState.validate()) {
-                      // singIn();\
-                      singIn();
-                    }
-                  },
-                ),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  child: FlatButton(
-                      color: Colors.transparent,
-                      child: Text(
-                        'Forgot Password?',
-                      ),
-                      onPressed: () {
-                        Navigator.pushNamed(context, ForgotPass.id);
-                      }),
-                )
-              ],
+                  SizedBox(
+                    height: 48.0,
+                  ),
+                  TextFormField(
+                    controller: emailEditingController,
+                    validator: (val) {
+                      return RegExp(
+                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                              .hasMatch(val)
+                          ? null
+                          : "Enter correct email";
+                    },
+                    keyboardType: TextInputType.emailAddress,
+                    textAlign: TextAlign.center,
+                    decoration:
+                        kTextFieldDecoration.copyWith(hintText: 'Enter email'),
+                  ),
+                  SizedBox(
+                    height: 8.0,
+                  ),
+                  TextFormField(
+                    controller: passwordEditingController,
+                    obscureText: true,
+                    textAlign: TextAlign.center,
+                    validator: (val) {
+                      return val.length < 6
+                          ? "Enter Password 6+ characters"
+                          : null;
+                    },
+                    decoration:
+                        kTextFieldDecoration.copyWith(hintText: 'Enter password'),
+                  ),
+                  SizedBox(
+                    height: 24.0,
+                  ),
+                  RoundedButton(
+                    title: "Login",
+                    color: Colors.green,
+                    onPressed: () async {
+                      if (formKey.currentState.validate()) {
+                        // singIn();\
+                        singIn();
+                      }
+                    },
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    child: FlatButton(
+                        color: Colors.transparent,
+                        child: Text(
+                          'Forgot Password?',
+                        ),
+                        onPressed: () {
+                          Navigator.pushNamed(context, ForgotPass.id);
+                        }),
+                  )
+                ],
+              ),
             ),
           ),
         ),

@@ -7,6 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:m_app/components/bot.dart';
 import 'package:m_app/components/messageBubble.dart';
+import 'package:m_app/constants.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 String loggedInUserName;
 User loggedInUser;
@@ -33,7 +35,8 @@ class _ChatBotState extends State<ChatBot> {
   bool chooseQuestion = false;
   bool newAns = false; // repeat widget
   bool finish = false;
-
+  Color borderColor = Colors.black26;
+  Color buttonColor = Colors.white;
   String topic;
   String question;
   String ans;
@@ -58,7 +61,11 @@ class _ChatBotState extends State<ChatBot> {
     return Scaffold(
       backgroundColor: Colors.lightBlue[50],
       appBar: AppBar(
-        title: Text("Chatbot"),
+        backgroundColor: appBarStyleColor,
+        title: Text(
+          "Chatbot",
+          style: appBarStyleText,
+        ),
         actions: <Widget>[
           IconButton(
               icon: Icon(
@@ -79,13 +86,18 @@ class _ChatBotState extends State<ChatBot> {
                           ),
                           TextButton(
                             onPressed: () {
+                              
+                              Navigator.of(context).pop();
                               removeBotMessages(loggedInUser);
                               setState(() {
                                 topicChoose = true;
                                 chooseQuestion = false;
                                 newAns = false;
+                               
                               });
-                              Navigator.of(context).pop();
+                              
+                              // Navigator.of(context).pop();
+                              
                             },
                             child: Text("Yes"),
                           )
@@ -96,28 +108,32 @@ class _ChatBotState extends State<ChatBot> {
         ],
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(18.0),
-          child: ListView(
-            physics: BouncingScrollPhysics(),
-            reverse: true,
-            children: [
-              Column(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: Container(
+          decoration: backImage,
+          child: Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: ListView(
+                physics: BouncingScrollPhysics(),
+                reverse: true,
                 children: [
-                  messageStream(),
-                  Container(child: topicChoose ? getBotMessage() : Container()),
-                  if (arrayOfQuestion != null)
-                    Container(
-                      child: chooseQuestion ? getQuestion() : Container(),
-                    ),
-                  Container(child: newAns ? repeat() : Container()),
-                  Container(child: finish ? fin() : Container()),
+                  Column(
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+          messageStream(),
+          Container(
+              child: topicChoose ? getBotMessage() : Container()),
+          if (arrayOfQuestion != null)
+            Container(
+              child: chooseQuestion ? getQuestion() : Container(),
+            ),
+          Container(child: newAns ? repeat() : Container()),
+          Container(child: finish ? fin() : Container()),
+                    ],
+                  ),
                 ],
               ),
-            ],
-          ),
+            ),
         ),
       ),
     );
@@ -130,7 +146,7 @@ class _ChatBotState extends State<ChatBot> {
       builder: (context, snapshot) {
         return snapshot.hasData
             ? ListView.builder(
-              physics: BouncingScrollPhysics(),
+                physics: BouncingScrollPhysics(),
                 primary: false,
                 shrinkWrap: true,
                 itemCount: snapshot.data.documents.length,
@@ -153,45 +169,46 @@ class _ChatBotState extends State<ChatBot> {
     return Stack(
       children: [
         Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            BotMessagePadding(
-              text: "Select an category you need help with",
-            ),
-            for (var t in topics)
-              FlatButton(
-                shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.blue),
-                    borderRadius: BorderRadius.circular(10)),
-                child: Text(
-                  t,
-                ),
-                onPressed: () {
-                  if (clickable == true) {
-                    setState(() {
-                      topicChoose = false;
-                      clickable = false;
-                    });
-                    updateQuestionList(t);
-                    addMessageBot("Select an category you need help with", t);
-                    // Future added since update question was taking time
-                    Future.delayed(Duration(seconds: 1), () {
-                      setState(() {
-                        // topicChoose = false;
-                        // clickable = false;
-                        chooseQuestion = true;
-                        topic = t;
-                        // arrayOfQuestion =  await addQuestion(topic);
-
-                        // addMessageBot(
-                        //     "Select an category you need help with", topic);
-                      });
-                    });
-                  }
-                },
-              )
-          ],
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              BotMessagePadding(
+                text: "Select an category you need help with",
+              ),
+              for (var t in topics)
+                FlatButton(
+        color: buttonColor,
+        shape: RoundedRectangleBorder(
+            side: BorderSide(color: borderColor),
+            borderRadius: BorderRadius.circular(10)),
+        child: Text(
+          t,
         ),
+        onPressed: () {
+          if (clickable == true) {
+            setState(() {
+              topicChoose = false;
+              clickable = false;
+            });
+            updateQuestionList(t);
+            addMessageBot("Select an category you need help with", t);
+            // Future added since update question was taking time
+            Future.delayed(Duration(seconds: 1), () {
+              setState(() {
+                // topicChoose = false;
+                // clickable = false;
+                chooseQuestion = true;
+                topic = t;
+                // arrayOfQuestion =  await addQuestion(topic);
+
+                // addMessageBot(
+                //     "Select an category you need help with", topic);
+              });
+            });
+          }
+        },
+                )
+            ],
+          ),
       ],
     );
   } // End Of Widget 1
@@ -211,8 +228,9 @@ class _ChatBotState extends State<ChatBot> {
             ),
             for (var q in arrayOfQuestion)
               FlatButton(
+                color: buttonColor,
                 shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.blue),
+                    side: BorderSide(color: borderColor),
                     borderRadius: BorderRadius.circular(10)),
                 child: Text(
                   q,
@@ -248,8 +266,9 @@ class _ChatBotState extends State<ChatBot> {
               "Do you want to select a different question in same category or sleect a new category",
         ),
         FlatButton(
+          color: buttonColor,
           shape: RoundedRectangleBorder(
-              side: BorderSide(color: Colors.blue),
+              side: BorderSide(color: borderColor),
               borderRadius: BorderRadius.circular(10)),
           onPressed: () {
             addMessageBot(
@@ -263,8 +282,9 @@ class _ChatBotState extends State<ChatBot> {
           child: Text("Different Question in same category"),
         ),
         FlatButton(
+          color: buttonColor,
           shape: RoundedRectangleBorder(
-              side: BorderSide(color: Colors.blue),
+              side: BorderSide(color: borderColor),
               borderRadius: BorderRadius.circular(10)),
           onPressed: () {
             addMessageBot(
@@ -290,8 +310,9 @@ class _ChatBotState extends State<ChatBot> {
           text: "Do you want to start the process again?",
         ),
         FlatButton(
+          color: buttonColor,
           shape: RoundedRectangleBorder(
-              side: BorderSide(color: Colors.blue),
+              side: BorderSide(color: borderColor),
               borderRadius: BorderRadius.circular(10)),
           child: Text("Yes"),
           onPressed: () {
@@ -306,8 +327,9 @@ class _ChatBotState extends State<ChatBot> {
           },
         ),
         FlatButton(
+          color: buttonColor,
           shape: RoundedRectangleBorder(
-              side: BorderSide(color: Colors.blue),
+              side: BorderSide(color: borderColor),
               borderRadius: BorderRadius.circular(10)),
           child: Text("No"),
           onPressed: () {

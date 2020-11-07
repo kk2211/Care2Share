@@ -6,6 +6,7 @@ import 'package:m_app/MoodDiary/models/moodcard.dart';
 import 'package:m_app/MoodDiary/screens/homepage.dart';
 import 'package:m_app/MoodDiary/widgets/activity.dart';
 import 'package:m_app/MoodDiary/widgets/moodicon.dart';
+import 'package:m_app/constants.dart';
 import 'package:provider/provider.dart';
 
 class StartPage extends StatefulWidget {
@@ -52,6 +53,7 @@ class _StartPageState extends State<StartPage> {
   DateTime date = new DateTime.now();
   TimeOfDay time = new TimeOfDay.now();
   Color colour = Colors.lightBlue[50];
+  String dateonly;
   void initState() {
     super.initState();
     setState(() {
@@ -69,27 +71,27 @@ class _StartPageState extends State<StartPage> {
     });
   }
 
-  String dateonly;
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.lightBlue[50],
         appBar: AppBar(
+            
             title: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('MOOD Dairy',
-                    style: TextStyle(
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.bold)),
+                Text('Mood Dairy',
+                    style: appBarStyleText,),
                 SizedBox(
-                  width: 5,
+                  width: 45,
                 ),
-                Icon(Icons.insert_emoticon, color: Colors.white, size: 25)
+                
               ],
             ),
-            backgroundColor: Colors.blue),
+            backgroundColor: appBarStyleColor),
         body: Container(
+          decoration: backImage,
           child: Column(children: <Widget>[
             SizedBox(
               height: 20,
@@ -103,7 +105,9 @@ class _StartPageState extends State<StartPage> {
                 child: Column(
                   children: [
                     CircleAvatar(
+                      
                       radius: 27,
+                      
                       child: CircleAvatar(
                           child: Icon(Icons.dashboard,
                               color: Colors.green, size: 30),
@@ -120,102 +124,102 @@ class _StartPageState extends State<StartPage> {
                   ],
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2001),
-                          lastDate: DateTime(2022))
-                      .then((date) => {
-                            setState(() {
-                              datepicked = date.day.toString() +
-                                  '-' +
-                                  date.month.toString() +
-                                  '-' +
-                                  date.year.toString();
-                              dateonly = date.day.toString() +
-                                  '/' +
-                                  date.month.toString();
-                            }),
-                          });
-                },
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      radius: 27,
-                      child: CircleAvatar(
-                          child: Icon(Icons.calendar_today,
-                              color: Colors.blue, size: 30),
-                          radius: 25,
-                          backgroundColor: Colors.white),
-                      backgroundColor: Colors.blue,
-                    ),
-                    SizedBox(
-                      height: 2.5,
-                    ),
-                    Text('Pick a date',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.blue,
-                            fontSize: 15))
-                  ],
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  showTimePicker(context: context, initialTime: TimeOfDay.now())
-                      .then((time) => {
-                            setState(() {
-                              timepicked = time.format(context).toString();
-                            })
-                          });
-                },
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      radius: 27,
-                      child: CircleAvatar(
-                          child: Icon(Icons.timer, color: Colors.red, size: 30),
-                          radius: 25,
-                          backgroundColor: Colors.white),
-                      backgroundColor: Colors.red,
-                    ),
-                    SizedBox(
-                      height: 2.5,
-                    ),
-                    Text('Pick a time',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.red,
-                            fontSize: 15))
-                  ],
-                ),
-              ),
+              // GestureDetector(
+              //   onTap: () {
+              //     showDatePicker(
+              //             context: context,
+              //             initialDate: DateTime.now(),
+              //             firstDate: DateTime(2001),
+              //             lastDate: DateTime(2022))
+              //         .then((date) => {
+              //               setState(() {
+              //                 datepicked = date.day.toString() +
+              //                     '-' +
+              //                     date.month.toString() +
+              //                     '-' +
+              //                     date.year.toString();
+              //                 dateonly = date.day.toString() +
+              //                     '/' +
+              //                     date.month.toString();
+              //               }),
+              //             });
+              //   },
+              //   child: Column(
+              //     children: [
+              //       CircleAvatar(
+              //         radius: 27,
+              //         child: CircleAvatar(
+              //             child: Icon(Icons.calendar_today,
+              //                 color: Colors.blue, size: 30),
+              //             radius: 25,
+              //             backgroundColor: Colors.white),
+              //         backgroundColor: Colors.blue,
+              //       ),
+              //       SizedBox(
+              //         height: 2.5,
+              //       ),
+              //       Text('Pick a date',
+              //           style: TextStyle(
+              //               fontWeight: FontWeight.w500,
+              //               color: Colors.blue,
+              //               fontSize: 15))
+              //     ],
+              //   ),
+              // ),
+              // GestureDetector(
+              //   onTap: () {
+              //     showTimePicker(context: context, initialTime: TimeOfDay.now())
+              //         .then((time) => {
+              //               setState(() {
+              //                 timepicked = time.format(context).toString();
+              //               })
+              //             });
+              //   },
+              //   child: Column(
+              //     children: [
+              //       CircleAvatar(
+              //         radius: 27,
+              //         child: CircleAvatar(
+              //             child: Icon(Icons.timer, color: Colors.red, size: 30),
+              //             radius: 25,
+              //             backgroundColor: Colors.white),
+              //         backgroundColor: Colors.red,
+              //       ),
+              //       SizedBox(
+              //         height: 2.5,
+              //       ),
+              //       Text('Pick a time',
+              //           style: TextStyle(
+              //               fontWeight: FontWeight.w500,
+              //               color: Colors.red,
+              //               fontSize: 15))
+              //     ],
+              //   ),
+              // ),
             ]),
             SizedBox(height: 20),
-            Container(
-              height: 30,
-              width: 30,
-              child: FloatingActionButton(
-                  backgroundColor: Colors.red,
-                  child: Icon(Icons.done),
-                  onPressed: () {
-                    //   setState(() {
-                    //   datetime = datepicked + '   ' + timepicked;
-                    // }
-                    // ),
-                    setState(() {
-                      datetime = datepicked + '   ' + timepicked;
-                    });
-                  }),
-            ),
+            // Container(
+            //   height: 30,
+            //   width: 30,
+            //   child: FloatingActionButton(
+            //       backgroundColor: Colors.red,
+            //       child: Icon(Icons.done),
+            //       onPressed: () {
+            //         //   setState(() {
+            //         //   datetime = datepicked + '   ' + timepicked;
+            //         // }
+            //         // ),
+            //         setState(() {
+            //           datetime = datepicked + '   ' + timepicked;
+            //         });
+            //       }),
+            // ),
             SizedBox(height: 20),
-            Text('WHAT YOU FEELING NOW?',
+            Text('What are you feeling now?',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
             SizedBox(height: 6),
             Text('(Tap to Select and Tap again to deselect!)',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
             Expanded(
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
@@ -230,7 +234,7 @@ class _StartPageState extends State<StartPage> {
                                 name: moods[index].name,
                                 colour: moods[index].iselected
                                     ? Colors.black
-                                    : Colors.lightBlue[50]),
+                                    : Colors.transparent),
                             onTap: () => {
                                   if (ontapcount == 0)
                                     {
@@ -254,11 +258,11 @@ class _StartPageState extends State<StartPage> {
                     );
                   }),
             ),
-            Text('WHAT YOU HAVE BEEN DOING?',
+            Text('What are you doing?',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
             SizedBox(height: 10),
-            Text('Hold on the activity to select,You can choose multiple',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+            Text('(Tap on the activity to select,You can choose multiple)',
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
             Expanded(
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
@@ -274,7 +278,7 @@ class _StartPageState extends State<StartPage> {
                               act[index].name,
                               act[index].selected
                                   ? Colors.black
-                                  : Colors.lightBlue[50]),
+                                  : Colors.transparent),
                           onTap: () => {
                                 if (act[index].selected)
                                   {
@@ -344,15 +348,15 @@ class _StartPageState extends State<StartPage> {
                     SizedBox(
                       width: 5,
                     ),
-                    Icon(Icons.save_alt, size: 20, color: Colors.white)
+                    // Icon(Icons.save_alt, size: 20, color: Colors.white)
                   ],
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.blue,
-                  border: Border.all(
-                    width: 1.00,
-                    color: Colors.blue,
-                  ),
+                  color: Colors.green,
+                  // border: Border.all(
+                  //   width: 1.00,
+                  //   color: Colors.blue,
+                  // ),
                   borderRadius: BorderRadius.circular(19.00),
                 ),
               ),

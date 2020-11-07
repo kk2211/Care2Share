@@ -30,7 +30,7 @@ Future<String> getRandomUser(User user) async {
   await firestore.collection("users").doc(user.uid).get().then((value) {
     currUserName = value.data()["userName"];
     pairedUsers = (value.data()["paired"]);
-    print(pairedUsers);
+    // print(pairedUsers);
 
     for (var i in usersInDb) {
       if (pairedUsers.contains(i) == false && i != currUserName) {
@@ -70,7 +70,7 @@ Future<String> getRandomUser(User user) async {
   setReadytoPairFalse(user.uid);
   setReadytoPairFalse(matchedUserDocid);
 
-  print(usersInDb);
+  // print(usersInDb);
 
   return userToPair;
 }
@@ -82,7 +82,7 @@ Future<String> getCurrUserName(User user) async {
   });
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setString("username", currUserName);
-  print(prefs.getString("username"));
+  // print(prefs.getString("username"));
 
   // return currUserName;
 }
@@ -131,7 +131,8 @@ getChatMessages(String chatRoomId) async {
       .collection("chatRoom")
       .doc(chatRoomId)
       .collection("chats")
-      .orderBy('time')
+      .orderBy('time',descending: true)
+      
       .snapshots();
 }
 
