@@ -26,10 +26,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightBlue[100],
+      // backgroundColor: Colors.lightBlue[100],
       body: Container(
         decoration: backImage,
-
         child: ModalProgressHUD(
           inAsyncCall: showSpinner,
           child: Padding(
@@ -133,7 +132,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           "userName": usernameEditingController.text,
           "userEmail": emailEditingController.text,
           "paired": new List(),
-          "dayPair": DateTime.now().day - 1
+          "dayPair": DateTime.now().day - 1,
+          "ready": true
         };
         _auth.signInWithEmailAndPassword(
             email: emailEditingController.text,
@@ -151,6 +151,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString("email", emailEditingController.text);
+        prefs.setString("username", usernameEditingController.text);
         Navigator.pushNamed(context, MenuScreen.id);
       }
       setState(() {
@@ -162,6 +163,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       print(e.code);
       showAlert(context, e.message);
     }
+    setState(() {
+      showSpinner = false;
+    });
   }
 
   void showAlert(BuildContext context, String error) {

@@ -29,6 +29,7 @@ class _MenuScreenState extends State<MenuScreen> {
   final _auth = FirebaseAuth.instance;
   var quote =
       "Mental health…is not a destination, but a process. It’s about how you drive, not where you’re going";
+
   @override
   void initState() {
     super.initState();
@@ -39,24 +40,14 @@ class _MenuScreenState extends State<MenuScreen> {
     });
 
     loggedInUser = getCurrentUser();
-    getCurrUserName(loggedInUser);
-    getLoggedInUsername();
+    // getCurrUserName(loggedInUser);
+    // getLoggedInUsername();
   }
-
-  // void getCurrentUser() {
-  //   try {
-  //     final user = _auth.currentUser;
-  //     if (user != null) {
-  //       loggedInUser = user;
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
     final data = MediaQuery.of(context);
+    getLoggedInUsername();
     return Scaffold(
       endDrawer: Drawer(
         child: Container(

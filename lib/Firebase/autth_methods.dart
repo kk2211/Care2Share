@@ -15,3 +15,8 @@ User getCurrentUser()  {
   }
   return loggedInUser;
 }
+
+ Future sendPasswordResetEmail(String email) async {
+    return auth.sendPasswordResetEmail(email: email);
+  }
+

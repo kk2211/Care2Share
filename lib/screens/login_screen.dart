@@ -8,6 +8,7 @@ import 'package:m_app/screens/menu_screen.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:m_app/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:m_app/Firebase/firestore.dart';
 
 final _auth = FirebaseAuth.instance;
 
@@ -24,10 +25,11 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordEditingController = new TextEditingController();
   bool showSpinner = false;
   final formKey = GlobalKey<FormState>();
+  String currUserName;
 
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightBlue[100],
+      // backgroundColor: Colors.lightBlue[100],
       body: Container(
         decoration: backImage,
         child: ModalProgressHUD(
@@ -78,8 +80,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           ? "Enter Password 6+ characters"
                           : null;
                     },
-                    decoration:
-                        kTextFieldDecoration.copyWith(hintText: 'Enter password'),
+                    decoration: kTextFieldDecoration.copyWith(
+                        hintText: 'Enter password'),
                   ),
                   SizedBox(
                     height: 24.0,
@@ -130,7 +132,20 @@ class _LoginScreenState extends State<LoginScreen> {
     if (user != null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString("email", emailEditingController.text);
-      Navigator.pushNamed(context, MenuScreen.id);
+      await firestore
+          .collection("users")
+          .doc(user.user.uid)
+          .get()
+          .then((value) {
+        currUserName = value.data()["userName"];
+        // print(currUserName);
+        prefs.setString("username", currUserName);
+
+        Navigator.pushNamed(
+          context,
+          MenuScreen.id,
+        );
+      });
     }
     setState(() {
       showSpinner = false;
