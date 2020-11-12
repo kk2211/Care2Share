@@ -5,12 +5,13 @@ import 'package:m_app/constants.dart';
 import 'package:m_app/components/messageBubble.dart';
 import "package:profanity_filter/profanity_filter.dart";
 import "package:m_app/constants.dart";
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatScreen extends StatefulWidget {
-  
   // static String id = "chat_screen";
   final String chatRoomId;
   final String userName;
+
   ChatScreen({this.chatRoomId, this.userName});
 
   @override
@@ -18,8 +19,9 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  String loggedInUsername;
   ScrollController _scrollController = new ScrollController();
- 
+
   Stream<QuerySnapshot> chats;
   TextEditingController messageTextController = new TextEditingController();
   String messageText;
@@ -27,7 +29,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    getLoggedInUsername();
     getChatMessages(widget.chatRoomId).then((val) {
       setState(() {
         chats = val;
@@ -38,9 +40,10 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-     if(_scrollController.hasClients){
-          _scrollController.animateTo(_scrollController.position.maxScrollExtent, duration: const Duration(milliseconds: 500), curve: Curves.easeOut);
-        }
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 500), curve: Curves.easeOut);
+    }
     return Scaffold(
       backgroundColor: Colors.lightBlue[50],
       appBar: AppBar(
@@ -58,14 +61,11 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             Expanded(child: messageStream()),
             Container(
-              
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
-                    
                     child: TextField(
-                      
                       controller: messageTextController,
                       decoration: kMessageTextFieldDecoration,
                       onChanged: (value) {
@@ -92,7 +92,8 @@ class _ChatScreenState extends State<ChatScreen> {
                       } else {
                         messageTextController.clear();
                         addMessage();
-                        FocusManager.instance.primaryFocus.unfocus(); // close keyboard
+                        FocusManager.instance.primaryFocus
+                            .unfocus(); // close keyboard
                       }
                     },
                   )
@@ -108,7 +109,7 @@ class _ChatScreenState extends State<ChatScreen> {
   addMessage() {
     if (messageText != null) {
       Map<String, dynamic> messageMap = {
-        "sender": widget.userName,
+        "sender": loggedInUsername,
         "message": messageText,
         'time': DateTime.now().millisecondsSinceEpoch,
       };
@@ -117,19 +118,14 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget messageStream() {
-    
-
     return StreamBuilder(
-      
       stream: chats,
       builder: (context, snapshot) {
-        
         // if (!snapshot.hasData) {
         //   return Center(child: Text("Not able to reach frebase"));
         // }
         return snapshot.hasData
-            ? 
-            ListView.builder(
+            ? ListView.builder(
                 controller: _scrollController,
                 reverse: true,
                 shrinkWrap: true,
@@ -138,17 +134,17 @@ class _ChatScreenState extends State<ChatScreen> {
                   return MessageBubble(
                     sender: widget.userName,
                     text: snapshot.data.documents[index].get("message"),
-                    isme: widget.userName ==
+                    isme: loggedInUsername ==
                         snapshot.data.documents[index].get("sender"),
                   );
-                }
-                )
-                
+                })
             : Container();
-            
       },
     );
-    
   }
-  
+
+  getLoggedInUsername() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    loggedInUsername = prefs.getString("username");
+  }
 }
