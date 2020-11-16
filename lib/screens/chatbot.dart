@@ -1,14 +1,13 @@
-import 'package:flutter/foundation.dart';
+// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:m_app/Firebase/firestore.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 import 'package:m_app/Firebase/autth_methods.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:m_app/components/bot.dart';
 import 'package:m_app/components/messageBubble.dart';
 import 'package:m_app/constants.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 String loggedInUserName;
 User loggedInUser;
@@ -44,7 +43,6 @@ class _ChatBotState extends State<ChatBot> {
   List<String> arrayOfQuestion;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     loggedInUser = getCurrentUser();
@@ -86,18 +84,16 @@ class _ChatBotState extends State<ChatBot> {
                           ),
                           TextButton(
                             onPressed: () {
-                              
                               Navigator.of(context).pop();
                               removeBotMessages(loggedInUser);
                               setState(() {
+                                newAns = false;
                                 topicChoose = true;
                                 chooseQuestion = false;
-                                newAns = false;
-                               
+                                finish = false;
                               });
-                              
+
                               // Navigator.of(context).pop();
-                              
                             },
                             child: Text("Yes"),
                           )
@@ -111,29 +107,29 @@ class _ChatBotState extends State<ChatBot> {
         child: Container(
           decoration: backImage,
           child: Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: ListView(
-                physics: BouncingScrollPhysics(),
-                reverse: true,
-                children: [
-                  Column(
-                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-          messageStream(),
-          Container(
-              child: topicChoose ? getBotMessage() : Container()),
-          if (arrayOfQuestion != null)
-            Container(
-              child: chooseQuestion ? getQuestion() : Container(),
+            padding: const EdgeInsets.all(18.0),
+            child: ListView(
+              physics: BouncingScrollPhysics(),
+              reverse: true,
+              children: [
+                Column(
+                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    messageStream(),
+                    Container(
+                        child: topicChoose ? getBotMessage() : Container()),
+                    if (arrayOfQuestion != null)
+                      Container(
+                        child: chooseQuestion ? getQuestion() : Container(),
+                      ),
+                    Container(child: newAns ? repeat() : Container()),
+                    Container(child: finish ? fin() : Container()),
+                  ],
+                ),
+              ],
             ),
-          Container(child: newAns ? repeat() : Container()),
-          Container(child: finish ? fin() : Container()),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+          ),
         ),
       ),
     );
@@ -169,46 +165,46 @@ class _ChatBotState extends State<ChatBot> {
     return Stack(
       children: [
         Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              BotMessagePadding(
-                text: "Select an category you need help with",
-              ),
-              for (var t in topics)
-                FlatButton(
-        color: buttonColor,
-        shape: RoundedRectangleBorder(
-            side: BorderSide(color: borderColor),
-            borderRadius: BorderRadius.circular(10)),
-        child: Text(
-          t,
-        ),
-        onPressed: () {
-          if (clickable == true) {
-            setState(() {
-              topicChoose = false;
-              clickable = false;
-            });
-            updateQuestionList(t);
-            addMessageBot("Select an category you need help with", t);
-            // Future added since update question was taking time
-            Future.delayed(Duration(seconds: 1), () {
-              setState(() {
-                // topicChoose = false;
-                // clickable = false;
-                chooseQuestion = true;
-                topic = t;
-                // arrayOfQuestion =  await addQuestion(topic);
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            BotMessagePadding(
+              text: "Select an category you need help with",
+            ),
+            for (var t in topics)
+              FlatButton(
+                color: buttonColor,
+                shape: RoundedRectangleBorder(
+                    side: BorderSide(color: borderColor),
+                    borderRadius: BorderRadius.circular(10)),
+                child: Text(
+                  t,
+                ),
+                onPressed: () {
+                  if (clickable == true) {
+                    setState(() {
+                      topicChoose = false;
+                      clickable = false;
+                    });
+                    updateQuestionList(t);
+                    addMessageBot("Select an category you need help with", t);
+                    // Future added since update question was taking time
+                    Future.delayed(Duration(seconds: 1), () {
+                      setState(() {
+                        // topicChoose = false;
+                        // clickable = false;
+                        chooseQuestion = true;
+                        topic = t;
+                        // arrayOfQuestion =  await addQuestion(topic);
 
-                // addMessageBot(
-                //     "Select an category you need help with", topic);
-              });
-            });
-          }
-        },
-                )
-            ],
-          ),
+                        // addMessageBot(
+                        //     "Select an category you need help with", topic);
+                      });
+                    });
+                  }
+                },
+              )
+          ],
+        ),
       ],
     );
   } // End Of Widget 1

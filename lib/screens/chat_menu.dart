@@ -170,7 +170,8 @@ getUserToday() async {
     String chatRoomId = getChatRoomId(loggedInUsername, userToMatch);
     Map<String, dynamic> chatRoom = {
       "users": [loggedInUsername, userToMatch],
-      "chatRoomId": chatRoomId
+      "chatRoomId": chatRoomId,
+      "message_time":DateTime.now().millisecondsSinceEpoch
     };
 
     addChatRoom(chatRoom, chatRoomId);

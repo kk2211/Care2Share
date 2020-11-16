@@ -106,7 +106,7 @@ class _MenuScreenState extends State<MenuScreen> {
                           );
                         });
                   },
-                  child: Text("Need Help")),
+                  child: Text("Need Professional Assistance?")),
               FlatButton(
                   onPressed: () async {
                     _auth.signOut();

@@ -122,8 +122,11 @@ setReadytoPairFalse(String id) {
 getUserChats(myName) async {
   return firestore
       .collection("chatRoom")
-      .where("users", arrayContains: myName)
+      .where("users", arrayContains: myName).orderBy('message_time',descending: true)
       .snapshots();
+  // var col =
+  //     firestore.collection("chatRoom").where("users", arrayContains: myName);
+  // return col..orderBy('message_time').snapshots();
 }
 
 getChatMessages(String chatRoomId) async {
@@ -131,8 +134,7 @@ getChatMessages(String chatRoomId) async {
       .collection("chatRoom")
       .doc(chatRoomId)
       .collection("chats")
-      .orderBy('time',descending: true)
-      
+      .orderBy('time', descending: true)
       .snapshots();
 }
 
@@ -143,6 +145,12 @@ addMessagetoFirestore(String chatRoomId, messageData) {
       .collection("chats")
       .add(messageData)
       .catchError((e) {});
+
+  firestore
+      .collection("chatRoom")
+      .doc(chatRoomId)
+      .update({"message_time": DateTime.now().millisecondsSinceEpoch});
+  //message_time
 }
 
 addChatbotMessagetoFirestore(User user, messageData) {

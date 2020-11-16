@@ -40,6 +40,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final data = MediaQuery.of(context);
     if (_scrollController.hasClients) {
       _scrollController.animateTo(_scrollController.position.maxScrollExtent,
           duration: const Duration(milliseconds: 500), curve: Curves.easeOut);
@@ -65,19 +66,40 @@ class _ChatScreenState extends State<ChatScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: TextField(
-                      controller: messageTextController,
-                      decoration: kMessageTextFieldDecoration,
-                      onChanged: (value) {
-                        messageText = value;
-                      },
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20, bottom: 10),
+                      child: Container(
+                        decoration: BoxDecoration(
+                           color: Colors.white,
+                            border: Border.all(
+                              color: Colors.transparent,
+                            ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                       
+                        // width: data.size.width,
+                        child: TextField(
+                          enableInteractiveSelection: true,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          controller: messageTextController,
+                          decoration: kMessageTextFieldDecoration,
+                          onChanged: (value) {
+                            messageText = value;
+                          },
+                        ),
+                      ),
                     ),
                   ),
                   FlatButton(
-                    child: Text(
-                      "send",
-                      style: kSendButtonTextStyle,
+                    child: Icon(
+                      Icons.send,
+                      color: Colors.white,
                     ),
+                    // child: Text(
+                    //   "Send",
+                    //   style: kSendButtonTextStyle,
+                    // ),
                     onPressed: () {
                       final filter = ProfanityFilter();
                       if (filter.hasProfanity(messageText)) {

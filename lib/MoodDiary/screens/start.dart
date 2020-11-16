@@ -26,6 +26,8 @@ class _StartPageState extends State<StartPage> {
   String datetime;
   int currentindex;
   int ontapcount = 0;
+  // var moodsToAdd = [];
+  var moodsToAdd = <Activity>{};
   List<Mood> moods = [
     Mood('images/smile.png', 'Happy', false),
     Mood('images/sad.png', 'Sad', false),
@@ -62,31 +64,28 @@ class _StartPageState extends State<StartPage> {
           date.month.toString() +
           '-' +
           date.year.toString();
-          dateonly = date.day.toString() +
-                                  '/' +
-                                  date.month.toString();
+      dateonly = date.day.toString() + '/' + date.month.toString();
       timepicked = DateFormat('h:mm a').format(date);
       datetime = datepicked + '   ' + timepicked;
       print(datetime);
     });
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.lightBlue[50],
         appBar: AppBar(
-            
             title: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Mood Dairy',
-                    style: appBarStyleText,),
+                Text(
+                  'Mood Dairy',
+                  style: appBarStyleText,
+                ),
                 SizedBox(
                   width: 45,
                 ),
-                
               ],
             ),
             backgroundColor: appBarStyleColor),
@@ -96,107 +95,106 @@ class _StartPageState extends State<StartPage> {
             SizedBox(
               height: 20,
             ),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: <
-                Widget>[
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, HomeScreen.id);
-                },
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      
-                      radius: 27,
-                      
-                      child: CircleAvatar(
-                          child: Icon(Icons.dashboard,
-                              color: Colors.green, size: 30),
-                          radius: 25,
-                          backgroundColor: Colors.white),
-                      backgroundColor: Colors.green,
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, HomeScreen.id);
+                    },
+                    child: Column(
+                      children: [
+                        CircleAvatar(
+                          radius: 27,
+                          child: CircleAvatar(
+                              child: Icon(Icons.dashboard,
+                                  color: Colors.green, size: 30),
+                              radius: 25,
+                              backgroundColor: Colors.white),
+                          backgroundColor: Colors.green,
+                        ),
+                        SizedBox(height: 2.5),
+                        Text('Dashboard',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: Colors.green,
+                                fontSize: 15))
+                      ],
                     ),
-                    SizedBox(height: 2.5),
-                    Text('Dashboard',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.green,
-                            fontSize: 15))
-                  ],
-                ),
-              ),
-              // GestureDetector(
-              //   onTap: () {
-              //     showDatePicker(
-              //             context: context,
-              //             initialDate: DateTime.now(),
-              //             firstDate: DateTime(2001),
-              //             lastDate: DateTime(2022))
-              //         .then((date) => {
-              //               setState(() {
-              //                 datepicked = date.day.toString() +
-              //                     '-' +
-              //                     date.month.toString() +
-              //                     '-' +
-              //                     date.year.toString();
-              //                 dateonly = date.day.toString() +
-              //                     '/' +
-              //                     date.month.toString();
-              //               }),
-              //             });
-              //   },
-              //   child: Column(
-              //     children: [
-              //       CircleAvatar(
-              //         radius: 27,
-              //         child: CircleAvatar(
-              //             child: Icon(Icons.calendar_today,
-              //                 color: Colors.blue, size: 30),
-              //             radius: 25,
-              //             backgroundColor: Colors.white),
-              //         backgroundColor: Colors.blue,
-              //       ),
-              //       SizedBox(
-              //         height: 2.5,
-              //       ),
-              //       Text('Pick a date',
-              //           style: TextStyle(
-              //               fontWeight: FontWeight.w500,
-              //               color: Colors.blue,
-              //               fontSize: 15))
-              //     ],
-              //   ),
-              // ),
-              // GestureDetector(
-              //   onTap: () {
-              //     showTimePicker(context: context, initialTime: TimeOfDay.now())
-              //         .then((time) => {
-              //               setState(() {
-              //                 timepicked = time.format(context).toString();
-              //               })
-              //             });
-              //   },
-              //   child: Column(
-              //     children: [
-              //       CircleAvatar(
-              //         radius: 27,
-              //         child: CircleAvatar(
-              //             child: Icon(Icons.timer, color: Colors.red, size: 30),
-              //             radius: 25,
-              //             backgroundColor: Colors.white),
-              //         backgroundColor: Colors.red,
-              //       ),
-              //       SizedBox(
-              //         height: 2.5,
-              //       ),
-              //       Text('Pick a time',
-              //           style: TextStyle(
-              //               fontWeight: FontWeight.w500,
-              //               color: Colors.red,
-              //               fontSize: 15))
-              //     ],
-              //   ),
-              // ),
-            ]),
+                  ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     showDatePicker(
+                  //             context: context,
+                  //             initialDate: DateTime.now(),
+                  //             firstDate: DateTime(2001),
+                  //             lastDate: DateTime(2022))
+                  //         .then((date) => {
+                  //               setState(() {
+                  //                 datepicked = date.day.toString() +
+                  //                     '-' +
+                  //                     date.month.toString() +
+                  //                     '-' +
+                  //                     date.year.toString();
+                  //                 dateonly = date.day.toString() +
+                  //                     '/' +
+                  //                     date.month.toString();
+                  //               }),
+                  //             });
+                  //   },
+                  //   child: Column(
+                  //     children: [
+                  //       CircleAvatar(
+                  //         radius: 27,
+                  //         child: CircleAvatar(
+                  //             child: Icon(Icons.calendar_today,
+                  //                 color: Colors.blue, size: 30),
+                  //             radius: 25,
+                  //             backgroundColor: Colors.white),
+                  //         backgroundColor: Colors.blue,
+                  //       ),
+                  //       SizedBox(
+                  //         height: 2.5,
+                  //       ),
+                  //       Text('Pick a date',
+                  //           style: TextStyle(
+                  //               fontWeight: FontWeight.w500,
+                  //               color: Colors.blue,
+                  //               fontSize: 15))
+                  //     ],
+                  //   ),
+                  // ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     showTimePicker(context: context, initialTime: TimeOfDay.now())
+                  //         .then((time) => {
+                  //               setState(() {
+                  //                 timepicked = time.format(context).toString();
+                  //               })
+                  //             });
+                  //   },
+                  //   child: Column(
+                  //     children: [
+                  //       CircleAvatar(
+                  //         radius: 27,
+                  //         child: CircleAvatar(
+                  //             child: Icon(Icons.timer, color: Colors.red, size: 30),
+                  //             radius: 25,
+                  //             backgroundColor: Colors.white),
+                  //         backgroundColor: Colors.red,
+                  //       ),
+                  //       SizedBox(
+                  //         height: 2.5,
+                  //       ),
+                  //       Text('Pick a time',
+                  //           style: TextStyle(
+                  //               fontWeight: FontWeight.w500,
+                  //               color: Colors.red,
+                  //               fontSize: 15))
+                  //     ],
+                  //   ),
+                  // ),
+                ]),
             SizedBox(height: 20),
             // Container(
             //   height: 30,
@@ -284,15 +282,18 @@ class _StartPageState extends State<StartPage> {
                                   {
                                     setState(() {
                                       act[index].selected = false;
+                                      moodsToAdd.remove(act[index]);
                                     })
                                   }
                                 else
                                   setState(() {
                                     act[index].selected = true;
-                                    Provider.of<MoodCard>(context,
-                                            listen: false)
-                                        .add(act[index]);
+                                    moodsToAdd.add(act[index]);
+                                    // Provider.of<MoodCard>(context,
+                                    //         listen: false)
+                                    //     .add(act[index]);
                                   }),
+                                  print(moodsToAdd)
                               }),
                     ]);
                   }),
@@ -300,35 +301,42 @@ class _StartPageState extends State<StartPage> {
             // Replace with Button
             GestureDetector(
               onTap: () => {
-                if(mood!=null && act!=null){
-                   setState(() {
-                  print("save");
-                  // print(datetime);
-                  Provider.of<MoodCard>(context, listen: false).addPlace(
-                      datetime,
-                      mood,
-                      image,
-                      Provider.of<MoodCard>(context, listen: false)
-                          .activityimage
-                          .join('_'),
-                      Provider.of<MoodCard>(context, listen: false)
-                          .activityname
-                          .join('_'),
-                      dateonly);
-                }),
-                Navigator.of(context).pushNamed(HomeScreen.id),
-                }
-                else{
-                  showDialog(context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text("Please select your feeling and tasks before saving"),
-                    );
-                  },
-                  )
-                  
-                }
-               
+                if (mood != null && moodsToAdd.isNotEmpty)
+                  {
+                    
+                    setState(() {
+                      // print(moodsToAdd);
+                      for (var i in moodsToAdd) {
+                        Provider.of<MoodCard>(context, listen: false).add(i);
+                      }
+                      print("save");
+                      print(datetime);
+                      Provider.of<MoodCard>(context, listen: false).addPlace(
+                          datetime,
+                          mood,
+                          image,
+                          Provider.of<MoodCard>(context, listen: false)
+                              .activityimage
+                              .join('_'),
+                          Provider.of<MoodCard>(context, listen: false)
+                              .activityname
+                              .join('_'),
+                          dateonly);
+                    }),
+                    Navigator.of(context).pushNamed(HomeScreen.id),
+                  }
+                else
+                  {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text(
+                              "Please select your feeling and activity before saving"),
+                        );
+                      },
+                    )
+                  }
               },
               child: Container(
                 height: 38.00,

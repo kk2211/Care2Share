@@ -36,6 +36,7 @@ class MChat extends StatelessWidget {
     return ChangeNotifierProvider.value(
         value: MoodCard(),
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           initialRoute: route,
           routes: {
             WelcomeScreen.id: (context) => WelcomeScreen(),

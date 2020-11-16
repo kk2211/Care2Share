@@ -16,11 +16,10 @@ class MoodCard extends ChangeNotifier {
   String actname;
   MoodCard({this.actimage, this.actname, this.datetime, this.image, this.mood});
   List items;
-  List<MoodData> data=[];
+  List<MoodData> data = [];
   String date;
-  bool isloading=false;
-  List<String> actiname=[];
-
+  bool isloading = false;
+  List<String> actiname = [];
 
   void add(Activity act) {
     activityimage.add(act.image);
@@ -28,23 +27,18 @@ class MoodCard extends ChangeNotifier {
     notifyListeners();
   }
 
-
-  Future<void> addPlace(
-    String datetime,
-    String mood,
-    String image,
-    String actimage,
-    String actname,
-    String date
-  ) async {
+  Future<void> addPlace(String datetime, String mood, String image,
+      String actimage, String actname, String date) async {
     DBHelper.insert('user_moods', {
       'datetime': datetime,
       'mood': mood,
       'image': image,
       'actimage': actimage,
       'actname': actname,
-      'date':date
+      'date': date
     });
+    activityimage = [];
+    activityname = [];
     notifyListeners();
   }
 
